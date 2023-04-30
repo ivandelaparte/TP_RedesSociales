@@ -44,6 +44,10 @@ nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios red | usuarios red == [] = []
                       | otherwise = nombreDeUsuario (primerUsuario red) : nombresDeUsuarios (quitarPrimerUsuario red)
 
+nombresDeUsuariosV2 :: RedSocial -> [String]
+nombresDeUsuariosV2 (us, rs, ps) | us == [] = []
+                                | otherwise = nombreDeUsuario (head us) : nombresDeUsuariosV2 (tail us, rs, ps)
+
 -- describir qué hace la función: .....
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe = undefined
