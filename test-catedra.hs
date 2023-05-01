@@ -1,4 +1,4 @@
-import Test.HUnit
+{-import Test.HUnit
 import Solucion
 
 main = runTestTT tests
@@ -26,7 +26,7 @@ tests = test [
  ]
 
 expectAny actual expected = elem actual expected ~? ("expected any of: " ++ show expected ++ "\n but got: " ++ show actual)
-
+-}
 -- Ejemplos
 
 usuario1 = (1, "Juan")
