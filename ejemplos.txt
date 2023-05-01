@@ -1,1 +1,17 @@
-redSocial1 = ([(1,"Ivan"),(2,"Lautaro"),(3,"Santino"),(4,"Vito")],[],[])
+usuarios:
+(1, "Ivan")
+(2, "Lautaro")
+(3, "Santino")
+(4, "Vito")
+
+listas de usuarios:
+[(1, "Ivan"), (2, "Lautaro"), (3, "Santino"), (4, "Vito")]    *más de un usuario*
+[(1, "Ivan")]                                                 *solo un usuario*
+
+listas de relaciones:
+[]                                *no hay relaciones*
+[((1, "Ivan"), (2, "Lautaro"))]    *solo una relación*
+
+redSocial1(usuarios) = ([(1,"Ivan"), (2,"Lautaro"), (3,"Santino"), (4,"Vito")], [], [])
+redSocial2(relaciones) = ([],[("Ivan","Vito"), ("Lautaro","Vito"),("Santino","Vito"),("Santino","Ivan")],[])
+redSocial2(relaciones) = ([],[((1,"Ivan"),(4,"Vito")),((2,"Lautaro"),(4,"Vito")),((3,"Santino"),(4,"Vito")),((3,"Santino"),(1,"Ivan"))],[])

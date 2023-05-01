@@ -36,21 +36,36 @@ likesDePublicacion (_, _, us) = us
 
 -- Ejercicios
 
--- describir qué hace la función: Recibe una Red social, de la cual se posiciona en el primer usuario,
--- toma su nombre, lo agrega en una lista dada por los nombres de usuarios de la red social inicial, pero
--- quitando al usuario mencionado en primer lugar, iterando de esta forma hasta obtener la red social con
--- la lista de usuarios vacía, lo que da fin a la recursión y devuelve la lista con todos los nombres.
+{-
+describir qué hace la funcióm: Recibe una RedSocial, de la cual se posiciona en el primer Usuario de la
+lista de Usuarios. Luego, toma el nombre de este primer Usuario y lo agrega a una lista. A continuación,
+continúa construyendo la lista de manera recursiva, utilizando la misma función 'nombresDeUsuarios', pero
+esta vez recibiendo como parámetro la misma RedSocial sin el primer Usuario cuyo nombre ya fue agregado a
+la lista, repitiendo así el proceso hasta recibir a la RedSocial con la lista de Usuarios vacía, lo que
+dará fin a la recursión y retornará la lista con todos los nombres de Usuarios que se fueron tomando.
+-}
 nombresDeUsuarios :: RedSocial -> [String]
-nombresDeUsuarios red | usuarios red == [] = []
-                      | otherwise = nombreDeUsuario (primerUsuario red) : nombresDeUsuarios (quitarPrimerUsuario red)
+nombresDeUsuarios (us, rs, ps) | us == [] = []
+                                 | otherwise = nombreDeUsuario (head us) : nombresDeUsuarios (tail us, rs, ps)
 
-nombresDeUsuariosV2 :: RedSocial -> [String]
-nombresDeUsuariosV2 (us, rs, ps) | us == [] = []
-                                | otherwise = nombreDeUsuario (head us) : nombresDeUsuariosV2 (tail us, rs, ps)
-
--- describir qué hace la función: .....
+{-
+describir qué hace la función: Recibe una RedSocial y un Usuario (u), se posiciona en la primera Relacion
+de la RedSocial y evalúa si u es uno de los dos Usuarios de dicha Relacion (u1 y u2), dando lugar a dos 
+posibilidades:
+        1- si esta condición se cumple, toma al otro Usuario de la Relacion (por ejemplo, si u es igual a
+u1, la función toma a u2) y lo agrega a la lista.
+        2- si esta condición no se cumple, entonces u no pertenece a la relación (u no es u1, ni tampoco es
+        u2), por lo que no se agregará nada a la lista.
+Luego de realizar esta evaluación, se continúa la construcción de la lista, repitiendo el mismo proceso a
+través de recursión con cada relación perteneciente a la RedSocial, evaluando amigosDe con el mismo usuario u,
+pero eliminando de la RedSocial a la Relacion ya evaluada en cada iteración hasta recibir a la RedSocial con
+la lista de Relaciones vacía, con la que finaliza y se retorna la lista con los ususarios que se fueron tomando.
+-}
 amigosDe :: RedSocial -> Usuario -> [Usuario]
-amigosDe = undefined
+amigosDe (_, [], _) _ = []
+amigosDe (us, ((u1,u2):rs), ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
+                                  | u == u2 = u1 : amigosDe (us, rs, ps) u
+                                  | otherwise = amigosDe (us, rs, ps) u
 
 -- describir qué hace la función: .....
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
