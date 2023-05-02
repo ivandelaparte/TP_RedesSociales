@@ -46,7 +46,7 @@ dará fin a la recursión y retornará la lista con todos los nombres de Usuario
 -}
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios (us, rs, ps) | us == [] = []
-                                 | otherwise = nombreDeUsuario (head us) : nombresDeUsuarios (tail us, rs, ps)
+                               | otherwise = nombreDeUsuario (head us) : nombresDeUsuarios (tail us, rs, ps)
 
 {-
 describir qué hace la función: Recibe una RedSocial y un Usuario (u), se posiciona en la primera Relacion
@@ -63,9 +63,9 @@ la lista de Relaciones vacía, con la que finaliza y se retorna la lista con los
 -}
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe (_, [], _) _ = []
-amigosDe (us, ((u1,u2):rs), ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
-                                  | u == u2 = u1 : amigosDe (us, rs, ps) u
-                                  | otherwise = amigosDe (us, rs, ps) u
+amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
+                                | u == u2 = u1 : amigosDe (us, rs, ps) u
+                                | otherwise = amigosDe (us, rs, ps) u
 
 -- describir qué hace la función: .....
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
