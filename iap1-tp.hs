@@ -69,19 +69,24 @@ amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
 
 -- describir qué hace la función: .....
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos = undefined
+cantidadDeAmigos red u = longitud (amigosDe red u)
 
 -- describir qué hace la función: .....
 usuarioConMasAmigos :: RedSocial -> Usuario
-usuarioConMasAmigos = undefined
+usuarioConMasAmigos ([u], _, _) = u
+usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantidadDeAmigos (us, rs, ps) (usuarioConMasAmigos (us, rs, ps)) = u
+                                   | otherwise = usuarioConMasAmigos (us, rs, ps)
 
 -- describir qué hace la función: .....
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos = undefined
+estaRobertoCarlos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u > 1000000 = True
+                                 | otherwise = estaRobertoCarlos (us, rs, ps)
 
 -- describir qué hace la función: .....
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
-publicacionesDe = undefined
+publicacionesDe (_, _, []) _ = []
+publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacionesDe (us, rs, ps) u
+                                 | otherwise = publicacionesDe (us, rs, ps) u
 
 -- describir qué hace la función: .....
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
@@ -102,12 +107,6 @@ existeSecuenciaDeAmigos = undefined
 
 -- Funciones auxiliares:
 
--- describir qué hace la función: Dada una red social válida, devuelve el dato del primer usuario dentro
--- de la lista de usuarios.
-primerUsuario :: RedSocial -> Usuario
-primerUsuario red = head (usuarios red)
-
--- describir qué hace la función: Dada una red social válida, devuelve la misma red social, pero
--- eliminando el primer usuario de la lista de usuarios.
-quitarPrimerUsuario :: RedSocial -> RedSocial
-quitarPrimerUsuario (us, rs, ps) = (tail us, rs, ps)
+longitud :: [t] -> Int
+longitud [] = 0
+longitud (x:xs) = 1 + longitud xs
