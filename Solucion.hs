@@ -140,7 +140,7 @@ perteneceLista (x:xs) l2 | pertenece x l2 = perteneceLista xs l2
                          | otherwise = False
 
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
-mismosElementos l1 l2 = perteneceLista l1 l2 && perteneceLista l2 l1
+mismosElementos l1 l2 = longitud l1 == longitud l2 && perteneceLista l1 l2 && perteneceLista l2 l1
 
 sinRepetidos :: (Eq t) => [t] -> [t]
 sinRepetidos [] = []
@@ -150,4 +150,4 @@ sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
 cadenaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 cadenaDeAmigos _ [] cadena = cadena
 cadenaDeAmigos red (u:us) cadena | pertenece u cadena = cadenaDeAmigos red us cadena
-                                    | otherwise = cadenaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
+                                 | otherwise = cadenaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
