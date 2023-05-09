@@ -119,9 +119,9 @@ tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [
 
 
 
--- describir qué hace la función: Utiliza la función auxiliar cadenaDeAmigos para obtener la secuencia completa de amigos de 'u1', y verifica si 'u2' pertenece a dicha cadena.
+-- describir qué hace la función: Utiliza la función auxiliar secuenciaDeAmigos para obtener la secuencia completa de amigos de 'u1', y verifica si 'u2' pertenece a dicha cadena.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (cadenaDeAmigos red [u1] [])
+existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
 
 
 
@@ -149,7 +149,7 @@ sinRepetidos [] = []
 sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
                     | otherwise = x : sinRepetidos xs
 
-cadenaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
-cadenaDeAmigos _ [] cadena = cadena
-cadenaDeAmigos red (u:us) cadena | pertenece u cadena = cadenaDeAmigos red us cadena
-                                 | otherwise = cadenaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
+secuenciaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
+secuenciaDeAmigos _ [] cadena = cadena
+secuenciaDeAmigos red (u:us) cadena | pertenece u cadena = secuenciaDeAmigos red us cadena
+                                 | otherwise = secuenciaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
