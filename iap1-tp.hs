@@ -159,47 +159,36 @@ tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [
                                        | u1 /= u2 && perteneceLista (publicacionesDe (u2:us, rs, ps) u1) (publicacionesQueLeGustanA (u2:us, rs, ps) u2) = True
                                        | otherwise = tieneUnSeguidorFiel (us, rs, ps) u1
 
--- describir qué hace la función: .....
+-- describir qué hace la función: Utiliza la función auxiliar cadenaDeAmigos para obtener la cadena completa de amigos de u1, y verifica si u2 pertenece a dicah cadena.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos = undefined
+existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (cadenaDeAmigos red [u1] [])
 
 
 -- Funciones auxiliares:
 
-{-
-describir qué hace la función: Utiliza recursión para contar la cantidad de elementos de una lista, por cada
-elemento x, suma 1 a la cantidad de elementos de esa misma lista pero sin el x, hasta llegar a una lista vacía
-con la que finaliza la recursión. 
--}
 longitud :: [t] -> Int
 longitud [] = 0
 longitud (x:xs) = 1 + longitud xs
 
-{-
-describir qué hace la función: Utiliza recursión para recorrer la Lista pasada como parámetro, en cada iteración
-evalúa si el primer elemento de la Lista ('x') coincide con el elemento pasado como parámetro ('e'). Si la condición
-se cumple para alguno de los elementos de la Lista, devuelve True; si no se cumple, recorrerá la Lista hasta que se
-encuentre vacía, con lo que devolverá False.
--}
 pertenece :: (Eq t) => t -> [t] -> Bool
 pertenece _ [] = False
 pertenece e (x:xs) | e == x = True
                    | otherwise = pertenece e xs
 
-{-
-describir qué hace la función: Dadas dos listas 'l1' y 'l2', recorre 'l1' evaluando si cada elemento pertenece
-a 'l2': Si un elemento 'x' de 'l1' no pertenece a 'l2', se acaba la función y devuelve False; si no encuentra
-un elemento que no pertenezca a 'l2', continúa la recursión hasta que la lista 'l1' se encuentre vacía, con lo
-que devolverá True sin importar el contenido de 'l2'.
--}
 perteneceLista :: (Eq t) => [t] -> [t] -> Bool
 perteneceLista [] _ = True
 perteneceLista (x:xs) l2 | pertenece x l2 = perteneceLista xs l2
                          | otherwise = False
 
-{-
-describir qué hace la función: Dadas dos listas 'l1' y 'l2', utiliza la función perteneceLista para comprobar si se
-cumplen al mismo tiempo que 'l1' pertenece a 'l2' y vicecersa.
--}
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
 mismosElementos l1 l2 = perteneceLista l1 l2 && perteneceLista l2 l1
+
+sinRepetidos :: (Eq t) => [t] -> [t]
+sinRepetidos [] = []
+sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
+                    | otherwise = x : sinRepetidos xs
+
+cadenaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
+cadenaDeAmigos _ [] cadena = cadena
+cadenaDeAmigos red (u:us) cadena | pertenece u cadena = cadenaDeAmigos red us cadena
+                                    | otherwise = cadenaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
