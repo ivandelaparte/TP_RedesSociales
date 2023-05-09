@@ -39,10 +39,11 @@ likesDePublicacion (_, _, us) = us
 -- Ejercicios
 
 -- describir qué hace la función: Recorre la lista de Usuarios, tomando el nombre de cada uno y añadiéndolo a una lista.
--- Finaliza cuando se vacía la lista de Usuarios y devuelve la lista de nombres.
+-- Finaliza cuando solo quede un elemento en la lista de Usuarios y devuelve la lista de nombres.
 nombresDeUsuarios :: RedSocial -> [String]
-nombresDeUsuarios (us, rs, ps) | us == [] = []
-                               | otherwise = nombreDeUsuario (head us) : nombresDeUsuarios (tail us, rs, ps)
+nombresDeUsuarios (u:us, rs, ps) | (u:us) == [u] = [nombreDeUsuario u]
+                                 | pertenece (nombreDeUsuario u) (nombresDeUsuarios (us, rs, ps)) = nombresDeUsuarios (us, rs, ps)
+                                 | otherwise = nombreDeUsuario u : nombresDeUsuarios (us, rs, ps)
 
 
 
