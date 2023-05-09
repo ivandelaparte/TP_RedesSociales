@@ -41,8 +41,9 @@ likesDePublicacion (_, _, us) = us
 -- describir qué hace la función: Recorre la lista de Usuarios, tomando el nombre de cada uno y añadiéndolo a una lista.
 -- Finaliza cuando solo quede un elemento en la lista de Usuarios y devuelve la lista de nombres.
 nombresDeUsuarios :: RedSocial -> [String]
-nombresDeUsuarios (u:us, rs, ps) | (u:us) == [u] = [nombreDeUsuario u]
-                                 | pertenece (nombreDeUsuario u) (nombresDeUsuarios (us, rs, ps)) = nombresDeUsuarios (us, rs, ps)
+nombresDeUsuarios ([], _, _) = [] -- Si no hay usuarios, devuelve una lista vacía.
+nombresDeUsuarios ([u], _, _) = [nombreDeUsuario u]
+nombresDeUsuarios (u:us, rs, ps) | pertenece (nombreDeUsuario u) (nombresDeUsuarios (us, rs, ps)) = nombresDeUsuarios (us, rs, ps)
                                  | otherwise = nombreDeUsuario u : nombresDeUsuarios (us, rs, ps)
 
 
@@ -50,7 +51,7 @@ nombresDeUsuarios (u:us, rs, ps) | (u:us) == [u] = [nombreDeUsuario u]
 -- describir qué hace la función: Recorre la lista de Relaciones, evaluando en cada una si el usuario 'u' pertenece a la relación
 -- y agregando a la lista de amigos a los usuarios relacionados. Finaliza cuando se vacía la lista de Usuarios y devuelve la lista de amigos de u.
 amigosDe :: RedSocial -> Usuario -> [Usuario]
-amigosDe (_, [], _) _ = []
+amigosDe (_, [], _) _ = [] -- Si no hay relaciones, devuelve una lista vacía.
 amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
                                 | u == u2 = u1 : amigosDe (us, rs, ps) u
                                 | otherwise = amigosDe (us, rs, ps) u
@@ -76,8 +77,8 @@ usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantid
 -- describir qué hace la función: Recorre la lista de Usuarios, evaluando en cada uno si su cantidad de amigos es mayor a 1000000.
 -- Finaliza cuando encuentra un Usuario que cumpla la condición, o cuando se vacía la lista de Usuarios.
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 1000000
-estaRobertoCarlos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u > 1000000 = True
+estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 10
+estaRobertoCarlos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u > 10 = True
                                  | otherwise = estaRobertoCarlos (us, rs, ps)
 
 
