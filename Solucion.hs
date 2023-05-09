@@ -74,12 +74,12 @@ usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantid
 
 
 
--- describir qué hace la función: Recorre la lista de Usuarios, evaluando en cada uno si su cantidad de amigos es mayor a 1000000.
+-- describir qué hace la función: Recorre la lista de Usuarios, evaluando en cada uno si su cantidad de amigos es mayor a 10.
 -- Finaliza cuando encuentra un Usuario que cumpla la condición, o cuando se vacía la lista de Usuarios.
 estaRobertoCarlos :: RedSocial -> Bool
+estaRobertoCarlos ([], rs, ps) = False
 estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 10
-estaRobertoCarlos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u > 10 = True
-                                 | otherwise = estaRobertoCarlos (us, rs, ps)
+estaRobertoCarlos (u:us, rs, ps) = cantidadDeAmigos (u:us, rs, ps) u > 10 || estaRobertoCarlos (us, rs, ps)
 
 
 
