@@ -26,30 +26,56 @@ todosLosTest = test [
     ejercicio10
     ]
 
+-- ejercicio1 toma como parámetro la lista de Usuarios (us), con las siguientes categorías:
+--      us:
+--          us tiene elementos?
+--          us tiene elementos repetidos?
 ejercicio1 = test [
     "Caso 1: lista de Usuarios vacía" ~: (nombresDeUsuarios redSinUsuarios) ~?= [],
     "Caso 2: lista de Usuarios sin nombres repetidos" ~: (nombresDeUsuarios redA) ~?= ["Iron Man", "Captain America", "Hulk"],
-    "Caso 3: lista de Usuarios con al menos unnombre repetido" ~: (nombresDeUsuarios redB) ~?= ["Hulk", "Iron Man", "Captain America"] --Nótese que devuelve la lista sin nombres repetidos.
+    "Caso 3: lista de Usuarios con al menos un nombre repetido" ~: (nombresDeUsuarios redB) ~?= ["Hulk", "Iron Man", "Captain America"] --Nótese que devuelve la lista sin nombres repetidos.
     ]
 
+-- ejercicio2 toma como parámetro la lista de Relaciones (rs) y el Usuario seleccionado (u), con las siguientes categorías:
+--      rs:
+--          rs tiene elementos?
+--      u:
+--          u tiene amigos?
 ejercicio2 = test [
     "Caso 1: lista de Relaciones vacía" ~: (amigosDe redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin amigos" ~: (amigosDe redA usuario1) ~?= [],
     "Caso 3: Usuario con al menos un amigo" ~: (amigosDe redB usuario1) ~?= [usuario2, usuario3]
     ]
 
+-- ejercicio3 toma como parámetro la lista de Relaciones (rs) y el Usuario seleccionado (u), con las siguientes categorías:
+--      rs:
+--          rs tiene elementos?
+--      u:
+--          u tiene amigos?
 ejercicio3 = test [
     "Caso 1: lista de Relaciones vacía" ~: (cantidadDeAmigos redSinRelacionesNiPublicaciones usuario1) ~?= 0,
     "Caso 2: Usuario sin amigos" ~: (cantidadDeAmigos redA usuario1) ~?= 0,
     "Caso 3: Usuario con al menos un amigo" ~: (cantidadDeAmigos redB usuario1) ~?= 2
     ]
 
+-- ejercicio4 toma como parámetro la lista de Relaciones (rs) y la cantidad de Usuarios con más amigos (ucma), con las siguientes categorías:
+--      rs:
+--          rs tiene elementos?
+--      ucma:
+--          ucma > 1?
 ejercicio4 = test [
     "Caso 1: lista de Relaciones vacía" ~: (usuarioConMasAmigos redSinRelacionesNiPublicaciones) ~?= usuario1, --Puede devolver cualquier Usuario, porque todos tienen 0 amigos.
     "Caso 2: un Usuario tiene la mayor cantidad de amigos" ~: (usuarioConMasAmigos redB) ~?= usuario3, --Devuelve el único Usuario que tiene más amigos.
     "Caso 3: varios Usuarios tienen la mayor cantidad de amigos" ~: (usuarioConMasAmigos redA) ~?= usuario2 --Devuelve alguno de los Usuarios que tienen más amigos.
     ]
 
+-- ejercicio5 toma como parámetro la lista de Usuarios (us), la lista de Relaciones (rs) y la cantidad de Usuarios Roberto Carlos (urc), con las siguientes categorías:
+--      us:
+--          us tiene elementos?
+--      rs:
+--          rs tiene elementos?
+--      urc:
+--          urc > 0?
 ejercicio5 = test [
     "Caso 1: lista de Usuarios vacía" ~: (estaRobertoCarlos redSinUsuarios) ~?= False,
     "Caso 2: lista de Relaciones vacía" ~: (estaRobertoCarlos redSinRelacionesNiPublicaciones) ~?= False,
@@ -57,18 +83,34 @@ ejercicio5 = test [
     "Caso 4: Al menos un Usuario tiene más de 10 amigos" ~: (estaRobertoCarlos redC) ~?= True
     ]
 
+-- ejercicio6 toma como parámetro la lista de Publicaciones (ps) y el Usuario seleccionado (u), con las siguientes categorías:
+--      ps:
+--          ps tiene elementos?
+--      u:
+--          u tiene publicaciones?
 ejercicio6 = test [
     "Caso 1: lista de Publicaciones vacía" ~: (publicacionesDe redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin publicaciones" ~: (publicacionesDe redA usuario3) ~?= [],
     "Caso 3: Usuario con al menos una publicación" ~: (publicacionesDe redA usuario1) ~?= [publicacion1_1, publicacion1_2]
     ]
 
+-- ejercicio7 toma como parámetro la lista de Publicaciones (ps) y el Usuario seleccionado (u), con las siguientes categorías:
+--      ps:
+--          ps tiene elementos?
+--      u:
+--          u tiene likes?
 ejercicio7 = test [
     "Caso 1: lista de Publicaciones vacía" ~: (publicacionesQueLeGustanA redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin publicaciones likeadas" ~: (publicacionesQueLeGustanA redA usuario1) ~?= [],
     "Caso 3: Usuario con al menos una publicación likeada" ~: (publicacionesQueLeGustanA redA usuario3) ~?= [publicacion1_1, publicacion1_2, publicacion2_1]
     ]
 
+-- ejercicio8 toma como parámetro la lista de Publicaciones (ps) y los Usuarios seleccionados (u1 y u2), con las siguientes categorías:
+--      ps:
+--          ps tiene elementos?
+--      relaciones entre u1 y u2:
+--          misma cantidad de likes?
+--          mismas publicaciones likeadas?
 ejercicio8 = test [
     "Caso 1: lista de Publicaciones vacía" ~: (lesGustanLasMismasPublicaciones redSinRelacionesNiPublicaciones usuario1 usuario2) ~?= True, --Da verdadero ya que ambas listas de publicaciones son vacías.
     "Caso 2: u1 y u2 tienen distintas cantidades de publicaciones likeadas" ~: (lesGustanLasMismasPublicaciones redA usuario1 usuario3) ~?= False,
@@ -76,6 +118,13 @@ ejercicio8 = test [
     "Caso 4: misma cantidad de likes, en las mismas publicaciones" ~: (lesGustanLasMismasPublicaciones redC usuario5 usuario9) ~?= True
     ]
 
+-- ejercicio9 toma como parámetro la lista de Usuarios (us) y el Usuario seleccionado (u), con las siguientes categorías:
+--      us:
+--          cantidad de elementos de us > 1?
+--      u:
+--          u tiene publicaciones?
+--          cuántos seguidores fieles?
+--          u seguidor fiel de sí mismo?
 ejercicio9 = test [
     "Caso 1: u es el único Usuario" ~: (tieneUnSeguidorFiel redD usuario1) ~?= False,
     "Caso 2: u no tiene Publicaciones" ~: (tieneUnSeguidorFiel redC usuario6) ~?= False,
@@ -84,6 +133,12 @@ ejercicio9 = test [
     "Caso 5: Al menos un Usuario distinto de u likeó todas sus publicaciones" ~: (tieneUnSeguidorFiel redC usuario1) ~?= True
     ]
 
+-- ejercicio10 toma como parámetro la lista de Relaciones (rs) y los Usuarios seleccionados (u1 y u2), con las siguientes categorías:
+--      rs:
+--          rs tiene elementos?
+--      relaciones entre u1 y u2:
+--          u1 y u2 son amigos?
+--          existe cadena de amigos entre u1 y u2?
 ejercicio10 = test [
     "Caso 1: lista de Relaciones vacía" ~: (existeSecuenciaDeAmigos redSinRelacionesNiPublicaciones usuario1 usuario2) ~?= False,
     "Caso 2: u1 y u2 son amigos" ~: (existeSecuenciaDeAmigos redA usuario2 usuario3) ~?= True,
