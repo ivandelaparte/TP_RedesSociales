@@ -26,14 +26,18 @@ todosLosTest = test [
     ejercicio10
     ]
 
+-- ACLARACIÓN: En algunos de los ejercicios, la especificación admite más de una respuesta válida (Por ejemplo, en las funciones que devuelven una lista, no importa
+-- el órden de los elementos dentro de la misma, dando origen a un conjunto de respuestas donde se respetan los elementos pero varía el órden de los mismos). Teniendo
+-- en cuenta que realizamos Test de Caja Negra, utilizaremos las funciones 'pertenece' y 'mismosElementos' para testear abarcando todo el abanico de respuestas posibles.
+
 -- ejercicio1 toma como parámetro la lista de Usuarios (us), con las siguientes categorías:
 --      us:
 --          us tiene elementos?
 --          us tiene elementos repetidos?
 ejercicio1 = test [
     "Caso 1: lista de Usuarios vacía" ~: (nombresDeUsuarios redSinUsuarios) ~?= [],
-    "Caso 2: lista de Usuarios sin nombres repetidos" ~: (nombresDeUsuarios redA) ~?= ["Iron Man", "Captain America", "Hulk"],
-    "Caso 3: lista de Usuarios con al menos un nombre repetido" ~: (nombresDeUsuarios redB) ~?= ["Hulk", "Iron Man", "Captain America"] --Nótese que devuelve la lista sin nombres repetidos.
+    "Caso 2: lista de Usuarios sin nombres repetidos" ~: mismosElementos (nombresDeUsuarios redA) ["Iron Man", "Captain America", "Hulk"] ~?= True,
+    "Caso 3: lista de Usuarios con al menos un nombre repetido" ~: mismosElementos (nombresDeUsuarios redB) ["Hulk", "Iron Man", "Captain America"] ~?= True --Nótese que devuelve la lista sin nombres repetidos.
     ]
 
 -- ejercicio2 toma como parámetro la lista de Relaciones (rs) y el Usuario seleccionado (u), con las siguientes categorías:
@@ -44,7 +48,7 @@ ejercicio1 = test [
 ejercicio2 = test [
     "Caso 1: lista de Relaciones vacía" ~: (amigosDe redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin amigos" ~: (amigosDe redA usuario1) ~?= [],
-    "Caso 3: Usuario con al menos un amigo" ~: (amigosDe redB usuario1) ~?= [usuario2, usuario3]
+    "Caso 3: Usuario con al menos un amigo" ~: mismosElementos (amigosDe redB usuario1) [usuario2, usuario3] ~?= True
     ]
 
 -- ejercicio3 toma como parámetro la lista de Relaciones (rs) y el Usuario seleccionado (u), con las siguientes categorías:
@@ -66,7 +70,7 @@ ejercicio3 = test [
 ejercicio4 = test [
     "Caso 1: lista de Relaciones vacía" ~: (usuarioConMasAmigos redSinRelacionesNiPublicaciones) ~?= usuario1, --Puede devolver cualquier Usuario, porque todos tienen 0 amigos.
     "Caso 2: un Usuario tiene la mayor cantidad de amigos" ~: (usuarioConMasAmigos redB) ~?= usuario3, --Devuelve el único Usuario que tiene más amigos.
-    "Caso 3: varios Usuarios tienen la mayor cantidad de amigos" ~: (usuarioConMasAmigos redA) ~?= usuario2 --Devuelve alguno de los Usuarios que tienen más amigos.
+    "Caso 3: varios Usuarios tienen la mayor cantidad de amigos" ~: pertenece (usuarioConMasAmigos redA) [usuario2, usuario3] ~?= True --Devuelve alguno de los Usuarios que tienen más amigos.
     ]
 
 -- ejercicio5 toma como parámetro la lista de Usuarios (us), la lista de Relaciones (rs) y la cantidad de Usuarios Roberto Carlos (urc), con las siguientes categorías:
@@ -91,7 +95,7 @@ ejercicio5 = test [
 ejercicio6 = test [
     "Caso 1: lista de Publicaciones vacía" ~: (publicacionesDe redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin publicaciones" ~: (publicacionesDe redA usuario3) ~?= [],
-    "Caso 3: Usuario con al menos una publicación" ~: (publicacionesDe redA usuario1) ~?= [publicacion1_1, publicacion1_2]
+    "Caso 3: Usuario con al menos una publicación" ~: mismosElementos (publicacionesDe redA usuario1) [publicacion1_1, publicacion1_2] ~?= True
     ]
 
 -- ejercicio7 toma como parámetro la lista de Publicaciones (ps) y el Usuario seleccionado (u), con las siguientes categorías:
@@ -102,7 +106,7 @@ ejercicio6 = test [
 ejercicio7 = test [
     "Caso 1: lista de Publicaciones vacía" ~: (publicacionesQueLeGustanA redSinRelacionesNiPublicaciones usuario1) ~?= [],
     "Caso 2: Usuario sin publicaciones likeadas" ~: (publicacionesQueLeGustanA redA usuario1) ~?= [],
-    "Caso 3: Usuario con al menos una publicación likeada" ~: (publicacionesQueLeGustanA redA usuario3) ~?= [publicacion1_1, publicacion1_2, publicacion2_1]
+    "Caso 3: Usuario con al menos una publicación likeada" ~: mismosElementos (publicacionesQueLeGustanA redA usuario3) [publicacion1_1, publicacion1_2, publicacion2_1] ~?= True
     ]
 
 -- ejercicio8 toma como parámetro la lista de Publicaciones (ps) y los Usuarios seleccionados (u1 y u2), con las siguientes categorías:
@@ -207,7 +211,7 @@ usuariosB = [usuario1, usuario2, usuario3, usuario20, usuario21]
 relacionesB = [relacion1_2, relacion1_3, relacion3_20, relacion3_21]
 redB = (usuariosB, relacionesB, [])
 
-usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario12]
+usuariosC = [usuario1, usuario2, usuario3, usuario4, usuario5, usuario6, usuario7, usuario8, usuario9, usuario10, usuario11, usuario12, usuario13, usuario14]
 relacionesC = [relacion1_2, relacion1_3, relacion1_4, relacion1_5, relacion1_6, relacion1_7, relacion1_8, relacion1_9, relacion1_10, relacion1_11, relacion1_12, relacion13_14]
 publicacionesC = [publicacion1_1, publicacion1_2, publicacion2_1, publicacion2_2,publicacion3_1, publicacion3_2, publicacion11_1, publicacion11_2]
 redC = (usuariosC, relacionesC, publicacionesC)
