@@ -68,7 +68,7 @@ ejercicio3 = test [
 --      ucma:
 --          ucma > 1?
 ejercicio4 = test [
-    "Caso 1: lista de Relaciones vacía" ~: (usuarioConMasAmigos redSinRelacionesNiPublicaciones) ~?= usuario1, --Puede devolver cualquier Usuario, porque todos tienen 0 amigos.
+    "Caso 1: lista de Relaciones vacía" ~: pertenece (usuarioConMasAmigos redSinRelacionesNiPublicaciones) (usuarios redSinRelacionesNiPublicaciones) ~?= True, --Puede devolver cualquier Usuario, porque todos tienen 0 amigos.
     "Caso 2: un Usuario tiene la mayor cantidad de amigos" ~: (usuarioConMasAmigos redB) ~?= usuario3, --Devuelve el único Usuario que tiene más amigos.
     "Caso 3: varios Usuarios tienen la mayor cantidad de amigos" ~: pertenece (usuarioConMasAmigos redA) [usuario2, usuario3] ~?= True --Devuelve alguno de los Usuarios que tienen más amigos.
     ]

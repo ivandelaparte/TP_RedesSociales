@@ -1,10 +1,10 @@
 -- Completar con los datos del grupo
 --
--- Nombre de Grupo: xx
--- Integrante 1: Nombre Apellido, email, LU
--- Integrante 2: Nombre Apellido, email, LU
--- Integrante 3: Nombre Apellido, email, LU
--- Integrante 4: Nombre Apellido, email, LU
+-- Nombre de Grupo: MIAT
+-- Integrante 1: Aaron Agustin Cuellar, aaroncuellar2003@gmail.com, 810/23
+-- Integrante 2: Tobias Ezequiel Seirgalea, tobyseirgalea@gmail.com, 78/23
+-- Integrante 3: Marcos Elian Wendy, wendymarcos2@gmail.com, 344/22
+-- Integrante 4: Ivan Luciano de la Parte Aguirre, ivandelaparte@gmail.com, 184/22
 
 module Solucion where
 
@@ -39,7 +39,7 @@ likesDePublicacion (_, _, us) = us
 -- Ejercicios
 
 -- describir qué hace la función: Recorre la lista de Usuarios, tomando el nombre de cada uno y añadiéndolo a una lista.
--- Finaliza cuando solo quede un elemento en la lista de Usuarios y devuelve la lista de nombres.
+-- Finaliza cuando solo quede un elemento en la lista de Usuarios y devuelve la lista de nombres. 
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios ([], _, _) = [] -- Si no hay usuarios, devuelve una lista vacía.
 nombresDeUsuarios ([u], _, _) = [nombreDeUsuario u]
@@ -78,7 +78,7 @@ usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantid
 -- Finaliza cuando encuentra un Usuario que cumpla la condición, o cuando se vacía la lista de Usuarios.
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos ([], rs, ps) = False
-estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 10
+--estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 10
 estaRobertoCarlos (u:us, rs, ps) = cantidadDeAmigos (u:us, rs, ps) u > 10 || estaRobertoCarlos (us, rs, ps)
 
 
@@ -114,12 +114,12 @@ lesGustanLasMismasPublicaciones red u1 u2 = mismosElementos (publicacionesQueLeG
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel ([], _, _) _ = False
 tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [] = False --Esta línea verifica que el Usuario parámetro tenga al menos una publicación.
-                                       | u1 /= u2 && perteneceLista (publicacionesDe (u2:us, rs, ps) u1) (publicacionesQueLeGustanA (u2:us, rs, ps) u2) = True
+                                       | idDeUsuario u1 /= idDeUsuario u2 && perteneceLista (publicacionesDe (u2:us, rs, ps) u1) (publicacionesQueLeGustanA (u2:us, rs, ps) u2) = True
                                        | otherwise = tieneUnSeguidorFiel (us, rs, ps) u1
 
 
 
--- describir qué hace la función: Utiliza la función auxiliar secuenciaDeAmigos para obtener la secuencia completa de amigos de 'u1', y verifica si 'u2' pertenece a dicha cadena.
+-- describir qué hace la función: Utiliza la función auxiliar secuenciaDeAmigos para obtener la secuencia completa de amigos de 'u1', y verifica si 'u2' pertenece a dicha secuencia.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
 
@@ -152,4 +152,4 @@ sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
 secuenciaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 secuenciaDeAmigos _ [] cadena = cadena
 secuenciaDeAmigos red (u:us) cadena | pertenece u cadena = secuenciaDeAmigos red us cadena
-                                 | otherwise = secuenciaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
+                                    | otherwise = secuenciaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
