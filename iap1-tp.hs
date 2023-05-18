@@ -1,12 +1,8 @@
--- Completar con los datos del grupo
---
--- Nombre de Grupo: MIAT
--- Integrante 1: Aaron Agustin Cuellar, aaroncuellar2003@gmail.com, 810/23
--- Integrante 2: Tobias Ezequiel Seirgalea, tobyseirgalea@gmail.com, 78/23
--- Integrante 3: Marcos Elian Wendy, wendymarcos2@gmail.com, 344/22
--- Integrante 4: Ivan Luciano de la Parte Aguirre, ivandelaparte@gmail.com, 184/22
-
-module Solucion where
+-- Nombre de Grupo: xx
+-- Integrante 1: Marcos Wendy, wendymarcos2@gmail.com, DNI 44254843
+-- Integrante 2: Nombre Apellido, email, LU
+-- Integrante 3: Nombre Apellido, email, LU
+-- Integrante 4: Nombre Apellido, email, LU
 
 type Usuario = (Integer, String) -- (id, nombre)
 type Relacion = (Usuario, Usuario) -- usuarios que se relacionan
@@ -38,127 +34,157 @@ likesDePublicacion (_, _, us) = us
 
 -- Ejercicios
 
-
--- Recibe una Red Social y almacena en una lista los nombres de usuarios sin repetir
--- Devuelve la lista de Nombres
+-- describir qué hace la función: Recibe una Red social, de la cual se posiciona en el primer usuario,
+-- toma su nombre, lo agrega en una lista dada por los nombres de usuarios de la red social inicial, pero
+-- quitando al usuario mencionado en primer lugar, iterando de esta forma hasta obtener la red social con
+-- la lista de usuarios vacía, lo que da fin a la recursión y devuelve la lista con todos los nombres.
 nombresDeUsuarios :: RedSocial -> [String]
-nombresDeUsuarios ([], _, _) = [] -- Si no hay usuarios, devuelve una lista vacía.
-nombresDeUsuarios ([u], _, _) = [nombreDeUsuario u]
-nombresDeUsuarios (u:us, rs, ps) | pertenece (nombreDeUsuario u) (nombresDeUsuarios (us, rs, ps)) = nombresDeUsuarios (us, rs, ps)
-                                 | otherwise = nombreDeUsuario u : nombresDeUsuarios (us, rs, ps)
+nombresDeUsuarios red | usuarios red == [] = []
+                      | otherwise = nombreDeUsuario (primerUsuario red) : nombresDeUsuarios (quitarPrimerUsuario red)
 
 
-
--- Recibe una Red Social y un Usuario. comprueba si el usuario pertenece a alguna relacion en las relaciones de la red social. y concatena al amigo.
--- Devuelve una lista de Usuarios que son amigos del Usuario pasado por parametro.
+-- Recibe una red social y un usuario 
+-- usa la funcion buscarUsuariosRelacionados para obtener la lista de relaciones del usuario
+-- en la red social
+-- Devuelve la lista de amigos del usuario en la red social
 amigosDe :: RedSocial -> Usuario -> [Usuario]
-amigosDe (_, [], _) _ = [] -- Si no hay relaciones, devuelve una lista vacía.
-amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
-                                | u == u2 = u1 : amigosDe (us, rs, ps) u
-                                | otherwise = amigosDe (us, rs, ps) u
+amigosDe red usuario = buscarUsuariosRelacionados (relaciones red) usuario
 
 
-
--- Recibe una Red Social y un Usuario.
--- Devuelve el cardinal de amigos del Usuario pasado por parametro. 
+-- Recibe una red social y un usuario 
+-- busca los amigos del usuario en la red social y devuelve la cantidad de amigos
+-- Devuelve la cantidad de amigos del usuario en la red social
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos red u = longitud (amigosDe red u)
+cantidadDeAmigos red usuario = length (amigosDe red usuario)
 
-
-
--- Recibe una Red Social
--- Devuelve el primer Usuario con mas amigos de la Red Social.
+-- Recibe una red social y un usuario
+-- devuelve el usuario con mas amigos en la red social
 usuarioConMasAmigos :: RedSocial -> Usuario
-usuarioConMasAmigos ([u], _, _) = u
-usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantidadDeAmigos (us, rs, ps) (usuarioConMasAmigos (us, rs, ps)) = u
-                                   | otherwise = usuarioConMasAmigos (us, rs, ps)
+usuarioConMasAmigos red = usuarioConMasAmigosAux red (primerUsuario red)
 
 
-
--- Recibe una red Social y busca algún usuario con más de 10 amigos
--- Devuelve True si se encontró. False si no.
+-- Recibe la red social
+-- Busca si "Roberto Carlos" está en la red
+-- Devuelve True si está, False si no está
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos ([], rs, ps) = False
-estaRobertoCarlos (u:us, rs, ps) = cantidadDeAmigos (u:us, rs, ps) u > 10 || estaRobertoCarlos (us, rs, ps)
+estaRobertoCarlos red = estaNombreEnRed red "Roberto Carlos"
 
 
-
--- Recibe una Red Social y un Usuario
--- Devuelve una lista de Publicaciones que fueron hechas por el Usuario pasado por parametro.
+-- describir qué hace la función: .....
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
-publicacionesDe (_, _, []) _ = []
-publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacionesDe (us, rs, ps) u
-                                 | otherwise = publicacionesDe (us, rs, ps) u
+publicacionesDe = undefined
 
-
-
--- Recibe una Red Social y un Usuario
--- Devuelve una lista de Publicaciones que le gustan al Usuario pasado por parametro.
+-- describir qué hace la función: .....
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
-publicacionesQueLeGustanA (_, _, []) _ = []
-publicacionesQueLeGustanA (us, rs, p:ps) u | pertenece u (likesDePublicacion p) = p : publicacionesQueLeGustanA (us, rs, ps) u
-                                           | otherwise = publicacionesQueLeGustanA (us, rs, ps) u
+publicacionesQueLeGustanA = undefined
 
-
-
--- Recibe una Red Social y dos Usuarios distintos 
--- Devuelve True si ambos usuarios tienen las mismas publicaciones que le gustan, False si no.
+-- describir qué hace la función: .....
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
-lesGustanLasMismasPublicaciones red u1 u2 = mismosElementos (publicacionesQueLeGustanA red u1) (publicacionesQueLeGustanA red u2)
+lesGustanLasMismasPublicaciones = undefined
 
-
-
--- Recibe una Red Social y un Usuario
--- Devuelve True si el Usuario pasado por parametro tiene un seguidor fiel, False si no.
+-- describir qué hace la función: .....
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
-tieneUnSeguidorFiel ([], _, _) _ = False
-tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [] = False --Esta línea verifica que el Usuario parámetro tenga al menos una publicación.
-                                       | idDeUsuario u1 /= idDeUsuario u2 && perteneceLista (publicacionesDe (u2:us, rs, ps) u1) (publicacionesQueLeGustanA (u2:us, rs, ps) u2) = True
-                                       | otherwise = tieneUnSeguidorFiel (us, rs, ps) u1
+tieneUnSeguidorFiel = undefined
 
-
-
--- Recibe una Red Social y dos Usuarios distintos
--- Devuelve True si existe una secuencia de amigos que conecte a ambos Usuarios, False si no.
+-- describir qué hace la función: .....
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
-
+existeSecuenciaDeAmigos = undefined
 
 
 -- Funciones auxiliares:
 
--- Recibe una lista de elementos y Devuelve su longitud
-longitud :: [t] -> Int
-longitud [] = 0
-longitud (x:xs) = 1 + longitud xs
+-- Dada una red social válida, devuelve el dato del primer usuario dentro
+-- de la lista de usuarios.
+primerUsuario :: RedSocial -> Usuario
+primerUsuario red = head (usuarios red)
 
--- Recibe un elemento y una lista de elementos.
--- Devuelve True si el elemento pertenece a la lista, False si no.
-pertenece :: (Eq t) => t -> [t] -> Bool
-pertenece _ [] = False
-pertenece e (x:xs) | e == x = True
-                   | otherwise = pertenece e xs
+-- Dada una red social válida, devuelve la misma red social, pero
+-- eliminando el primer usuario de la lista de usuarios.
+quitarPrimerUsuario :: RedSocial -> RedSocial
+quitarPrimerUsuario (us, rs, ps) = (tail us, rs, ps)
 
--- Recibe dos listas de elementos.
--- Devuelve True si todos los elementos de la primera lista pertenecen a la segunda lista, False si no.
-perteneceLista :: (Eq t) => [t] -> [t] -> Bool
-perteneceLista [] _ = True
-perteneceLista (x:xs) l2 | pertenece x l2 = perteneceLista xs l2
-                         | otherwise = False
 
--- Recibe dos listas de elementos y Devuelve True si ambas listas tienen los mismos elementos, False si no.
-mismosElementos :: (Eq t) => [t] -> [t] -> Bool
-mismosElementos l1 l2 = longitud l1 == longitud l2 && perteneceLista l1 l2 && perteneceLista l2 l1
+-- Recibe una lista de relaciones y un usuario
+-- Busca en la lista de relaciones si el usuario pertenece a alguna relacion.
+-- Si pertenece, suma a la lista de usuarios relacionados al usuario que no es el usuario recibido.
+-- Devuelve la lista de usuarios relacionados con el usuario
+buscarUsuariosRelacionados :: [Relacion] -> Usuario -> [Usuario] 
+buscarUsuariosRelacionados [] _ = []
+buscarUsuariosRelacionados  ((u1,u2):rs) usuario | idDeUsuario u1 == idDeUsuario usuario = u2 : buscarUsuariosRelacionados rs usuario
+                                  | idDeUsuario u2 == idDeUsuario usuario = u1 : buscarUsuariosRelacionados rs usuario
+                                  | otherwise = buscarUsuariosRelacionados rs usuario
 
--- Recibe una lista de elementos y Devuelve una lista sin elementos repetidos.
-sinRepetidos :: (Eq t) => [t] -> [t]
-sinRepetidos [] = []
-sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
-                    | otherwise = x : sinRepetidos xs
 
--- Recibe una Red Social y dos usuarios distintos.
--- Devuelve una lista de Usuarios
-secuenciaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
-secuenciaDeAmigos _ [] cadena = cadena
-secuenciaDeAmigos red (u:us) cadena | pertenece u cadena = secuenciaDeAmigos red us cadena
-                                    | otherwise = secuenciaDeAmigos red (us ++ (amigosDe red u)) (u:cadena)
+-- Recibe una red social y un usuario (primer usuario de la red social)
+-- el usuario enviado es comparado con la cantidad de amigos de cada usuario en la red social
+-- Finalmente, devuelve el usuario con mas amigos en la red social
+
+usuarioConMasAmigosAux :: RedSocial -> Usuario -> Usuario 
+usuarioConMasAmigosAux red usuario | usuarios red == [] = usuario
+                                   | cantidadDeAmigos red usuario > cantidadDeAmigos red (primerUsuario red) = usuarioConMasAmigosAux (quitarPrimerUsuario red) usuario
+                                   | otherwise = usuarioConMasAmigosAux (quitarPrimerUsuario red) (primerUsuario red)
+
+-- Recibe la red social y un nombre
+-- Busca si el nombre está en la red
+-- Devuelve True si está, False si no está
+estaNombreEnRed :: RedSocial -> String -> Bool
+estaNombreEnRed red nombre   | nombresDeUsuarios red == [] = False
+                             | nombre == head (nombresDeUsuarios red) = True
+                             | otherwise = estaNombreEnRed (quitarPrimerUsuario red) nombre
+
+
+
+
+
+
+
+
+
+-- Ejemplos de Redes Sociales
+
+
+-- Ejemplos
+
+usuario1 = (1, "Juan")
+usuario2 = (2, "Natalia")
+usuario3 = (3, "Pedro")
+--usuario4 = (4, "Mariela")
+usuario4 = (4, "Roberto Carlos")
+
+usuario5 = (5, "Natalia")
+
+
+relacion1_2 = (usuario1, usuario2)
+relacion1_3 = (usuario1, usuario3)
+relacion1_4 = (usuario4, usuario1) -- Notar que el orden en el que aparecen los usuarios es indistinto
+relacion2_3 = (usuario3, usuario2)
+relacion2_4 = (usuario2, usuario4)
+relacion3_4 = (usuario4, usuario3)
+
+publicacion1_1 = (usuario1, "Este es mi primer post", [usuario2, usuario4])
+publicacion1_2 = (usuario1, "Este es mi segundo post", [usuario4])
+publicacion1_3 = (usuario1, "Este es mi tercer post", [usuario2, usuario5])
+publicacion1_4 = (usuario1, "Este es mi cuarto post", [])
+publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
+
+publicacion2_1 = (usuario2, "Hello World", [usuario4])
+publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
+
+publicacion3_1 = (usuario3, "Lorem Ipsum", [])
+publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
+publicacion3_3 = (usuario3, "consectetur adipiscing elit", [usuario2, usuario5])
+
+publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
+publicacion4_2 = (usuario4, "I am Bob", [])
+publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
+
+
+usuariosA = [usuario1, usuario2, usuario3, usuario4]
+relacionesA = [relacion1_2, relacion1_4, relacion2_3, relacion2_4, relacion3_4]
+publicacionesA = [publicacion1_1, publicacion1_2, publicacion2_1, publicacion2_2, publicacion3_1, publicacion3_2, publicacion4_1, publicacion4_2]
+redA = (usuariosA, relacionesA, publicacionesA)
+
+usuariosB = [usuario1, usuario2, usuario3, usuario5]
+relacionesB = [relacion1_2, relacion2_3]
+publicacionesB = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
+redB = (usuariosB, relacionesB, publicacionesB)
