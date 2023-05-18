@@ -39,8 +39,8 @@ likesDePublicacion (_, _, us) = us
 -- Ejercicios
 
 
--- Recibe una Red Social y almacena en una lista los nombres de usuarios sin repetir
--- Devuelve la lista de Nombres
+-- Recibe una Red Social y almacena en una lista los nombres de usuarios sin repetir.
+-- Devuelve la lista de Nombres.
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios ([], _, _) = [] -- Si no hay usuarios, devuelve una lista vacía.
 nombresDeUsuarios ([u], _, _) = [nombreDeUsuario u]
@@ -49,8 +49,8 @@ nombresDeUsuarios (u:us, rs, ps) | pertenece (nombreDeUsuario u) (nombresDeUsuar
 
 
 
--- Recibe una Red Social y un Usuario. comprueba si el usuario pertenece a alguna relacion en las relaciones de la red social. y concatena al amigo.
--- Devuelve una lista de Usuarios que son amigos del Usuario pasado por parametro.
+-- Recibe una Red Social y un Usuario, comprueba si el usuario pertenece a alguna relación en las relaciones de la red social y, de ser así, concatena al amigo.
+-- Devuelve una lista de Usuarios que son amigos del Usuario pasado por parámetro.
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe (_, [], _) _ = [] -- Si no hay relaciones, devuelve una lista vacía.
 amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
@@ -60,14 +60,14 @@ amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
 
 
 -- Recibe una Red Social y un Usuario.
--- Devuelve el cardinal de amigos del Usuario pasado por parametro. 
+-- Devuelve el cardinal de la lista de amigos del Usuario pasado por parámetro. 
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
 cantidadDeAmigos red u = longitud (amigosDe red u)
 
 
 
 -- Recibe una Red Social
--- Devuelve el primer Usuario con mas amigos de la Red Social.
+-- Devuelve el primer Usuario con más amigos de la Red Social.
 usuarioConMasAmigos :: RedSocial -> Usuario
 usuarioConMasAmigos ([u], _, _) = u
 usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantidadDeAmigos (us, rs, ps) (usuarioConMasAmigos (us, rs, ps)) = u
@@ -75,7 +75,7 @@ usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantid
 
 
 
--- Recibe una red Social y busca algún usuario con más de 10 amigos
+-- Recibe una red Social y busca algún usuario con más de 10 amigos.
 -- Devuelve True si se encontró. False si no.
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos ([], rs, ps) = False
@@ -83,8 +83,8 @@ estaRobertoCarlos (u:us, rs, ps) = cantidadDeAmigos (u:us, rs, ps) u > 10 || est
 
 
 
--- Recibe una Red Social y un Usuario
--- Devuelve una lista de Publicaciones que fueron hechas por el Usuario pasado por parametro.
+-- Recibe una Red Social y un Usuario.
+-- Devuelve una lista de Publicaciones que fueron hechas por el Usuario pasado por parámetro.
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe (_, _, []) _ = []
 publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacionesDe (us, rs, ps) u
@@ -92,8 +92,8 @@ publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacion
 
 
 
--- Recibe una Red Social y un Usuario
--- Devuelve una lista de Publicaciones que le gustan al Usuario pasado por parametro.
+-- Recibe una Red Social y un Usuario.
+-- Devuelve una lista de Publicaciones que le gustan al Usuario pasado por parámetro.
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
 publicacionesQueLeGustanA (_, _, []) _ = []
 publicacionesQueLeGustanA (us, rs, p:ps) u | pertenece u (likesDePublicacion p) = p : publicacionesQueLeGustanA (us, rs, ps) u
@@ -101,15 +101,15 @@ publicacionesQueLeGustanA (us, rs, p:ps) u | pertenece u (likesDePublicacion p) 
 
 
 
--- Recibe una Red Social y dos Usuarios distintos 
+-- Recibe una Red Social y dos Usuarios distintos.
 -- Devuelve True si ambos usuarios tienen las mismas publicaciones que le gustan, False si no.
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones red u1 u2 = mismosElementos (publicacionesQueLeGustanA red u1) (publicacionesQueLeGustanA red u2)
 
 
 
--- Recibe una Red Social y un Usuario
--- Devuelve True si el Usuario pasado por parametro tiene un seguidor fiel, False si no.
+-- Recibe una Red Social y un Usuario.
+-- Devuelve True si el Usuario pasado por parámetro tiene al menos un seguidor fiel, False si no.
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel ([], _, _) _ = False
 tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [] = False --Esta línea verifica que el Usuario parámetro tenga al menos una publicación.
@@ -118,7 +118,7 @@ tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [
 
 
 
--- Recibe una Red Social y dos Usuarios distintos
+-- Recibe una Red Social y dos Usuarios distintos.
 -- Devuelve True si existe una secuencia de amigos que conecte a ambos Usuarios, False si no.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
@@ -127,7 +127,7 @@ existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
 
 -- Funciones auxiliares:
 
--- Recibe una lista de elementos y Devuelve su longitud
+-- Recibe una lista de elementos y devuelve su longitud.
 longitud :: [t] -> Int
 longitud [] = 0
 longitud (x:xs) = 1 + longitud xs
@@ -146,7 +146,7 @@ perteneceLista [] _ = True
 perteneceLista (x:xs) l2 | pertenece x l2 = perteneceLista xs l2
                          | otherwise = False
 
--- Recibe dos listas de elementos y Devuelve True si ambas listas tienen los mismos elementos, False si no.
+-- Recibe dos listas de elementos y Devuelve True si ambas listas tienen los mismos elementos y longitud, False si no.
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
 mismosElementos l1 l2 = longitud l1 == longitud l2 && perteneceLista l1 l2 && perteneceLista l2 l1
 
@@ -156,8 +156,8 @@ sinRepetidos [] = []
 sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
                     | otherwise = x : sinRepetidos xs
 
--- Recibe una Red Social y dos usuarios distintos.
--- Devuelve una lista de Usuarios
+-- Recibe una Red Social, una lista de usuarios a evaluar y una lista (cadena) donde se almacenarán los relacionados.
+-- Devuelve una lista con todos los usuarios que pertenezcan a la cadena.
 secuenciaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 secuenciaDeAmigos _ [] cadena = cadena
 secuenciaDeAmigos red (u:us) cadena | pertenece u cadena = secuenciaDeAmigos red us cadena
