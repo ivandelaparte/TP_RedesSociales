@@ -38,8 +38,9 @@ likesDePublicacion (_, _, us) = us
 
 -- Ejercicios
 
--- describir qué hace la función: Recorre la lista de Usuarios, tomando el nombre de cada uno y añadiéndolo a una lista.
--- Finaliza cuando solo quede un elemento en la lista de Usuarios y devuelve la lista de nombres. 
+
+-- Recibe una Red Social y almacena en una lista los nombres de usuarios sin repetir
+-- Devuelve la lista de Nombres
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios ([], _, _) = [] -- Si no hay usuarios, devuelve una lista vacía.
 nombresDeUsuarios ([u], _, _) = [nombreDeUsuario u]
@@ -48,8 +49,8 @@ nombresDeUsuarios (u:us, rs, ps) | pertenece (nombreDeUsuario u) (nombresDeUsuar
 
 
 
--- describir qué hace la función: Recorre la lista de Relaciones, evaluando en cada una si el usuario 'u' pertenece a la relación
--- y agregando a la lista de amigos a los usuarios relacionados. Finaliza cuando se vacía la lista de Usuarios y devuelve la lista de amigos de u.
+-- Recibe una Red Social y un Usuario. Se fijate si el usuario pertenece a alguna relacion en las relaciones de la red social. y concatena al amigo.
+-- Devuelve una lista de Usuarios que son amigos del Usuario pasado por parametro.
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe (_, [], _) _ = [] -- Si no hay relaciones, devuelve una lista vacía.
 amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
@@ -58,15 +59,15 @@ amigosDe (us, (u1,u2):rs, ps) u | u == u1 = u2 : amigosDe (us, rs, ps) u
 
 
 
--- describir qué hace la función: Utiliza la función auxiliar longitud para contar la cantidad de elementos de
--- amigosDe el Usuario 'u' en la RedSocial 'red' pasados como parámetro.
+-- Recibe una Red Social y un Usuario.
+-- Devuelve el cardinal de amigos del Usuario pasado por parametro. 
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
 cantidadDeAmigos red u = longitud (amigosDe red u)
 
 
 
--- describir qué hace la función: Recorre la lista de Usuarios, comparando si el usuario evaluado tiene una cantidadDeAmigos
--- mayor al usuarioConMasAmigos del resto de la lista, finalizando cuando encuentre al usuario con más amigos y retornándolo.
+-- Recibe una Red Social
+-- Devuelve el primer Usuario con mas amigos de la Red Social.
 usuarioConMasAmigos :: RedSocial -> Usuario
 usuarioConMasAmigos ([u], _, _) = u
 usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantidadDeAmigos (us, rs, ps) (usuarioConMasAmigos (us, rs, ps)) = u
@@ -74,17 +75,16 @@ usuarioConMasAmigos (u:us, rs, ps) | cantidadDeAmigos (u:us, rs, ps) u >= cantid
 
 
 
--- describir qué hace la función: Recorre la lista de Usuarios, evaluando en cada uno si su cantidad de amigos es mayor a 10.
--- Finaliza cuando encuentra un Usuario que cumpla la condición, o cuando se vacía la lista de Usuarios.
+-- Recibe una red Social y busca algún usuario con más de 10 amigos
+-- Devuelve True si se encontró. False si no.
 estaRobertoCarlos :: RedSocial -> Bool
 estaRobertoCarlos ([], rs, ps) = False
---estaRobertoCarlos ([u], rs, ps) = cantidadDeAmigos ([u], rs, ps) u > 10
 estaRobertoCarlos (u:us, rs, ps) = cantidadDeAmigos (u:us, rs, ps) u > 10 || estaRobertoCarlos (us, rs, ps)
 
 
 
--- describir qué hace la función: Recorre la lista de Publicaciones, evaluando en cada una si el autor de la publicación coincide con el usuario 'u'.
--- Crea una lista con las Publicaciones que cumplan con la condición y la retorna cuando se vacía la lista de Publicaciones.
+-- Recibe una Red Social y un Usuario
+-- Devuelve una lista de Publicaciones que fueron hechas por el Usuario pasado por parametro.
 publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe (_, _, []) _ = []
 publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacionesDe (us, rs, ps) u
@@ -92,8 +92,8 @@ publicacionesDe (us, rs, p:ps) u | usuarioDePublicacion p == u = p : publicacion
 
 
 
--- describir qué hace la función: Recorre la lista de Publicaciones, evaluando en cada una si el usuario 'u' pertenece a los likes de cada una. Crea una lista
--- con las publicaciones que cumplan con la condición y la retorna cuando se vacía la lista de Publicaciones.
+-- Recibe una Red Social y un Usuario
+-- Devuelve una lista de Publicaciones que le gustan al Usuario pasado por parametro.
 publicacionesQueLeGustanA :: RedSocial -> Usuario -> [Publicacion]
 publicacionesQueLeGustanA (_, _, []) _ = []
 publicacionesQueLeGustanA (us, rs, p:ps) u | pertenece u (likesDePublicacion p) = p : publicacionesQueLeGustanA (us, rs, ps) u
@@ -101,16 +101,15 @@ publicacionesQueLeGustanA (us, rs, p:ps) u | pertenece u (likesDePublicacion p) 
 
 
 
--- describir qué hace la función: Utiliza una función auxiliar mismosElementos para comprobar que las publicaciones que le gustan a ambos usuarios
--- sean las mismas, sin importar el órden en que vengan dadas ambas listas.
+-- Recibe una Red Social y dos Usuarios distintos 
+-- Devuelve True si ambos usuarios tienen las mismas publicaciones que le gustan, False si no.
 lesGustanLasMismasPublicaciones :: RedSocial -> Usuario -> Usuario -> Bool
 lesGustanLasMismasPublicaciones red u1 u2 = mismosElementos (publicacionesQueLeGustanA red u1) (publicacionesQueLeGustanA red u2)
 
 
 
--- describir qué hace la función: Recorre la lista de Usuarios, omitiendo al propio 'u1' pasado como parámetro. Por cada usuario 'u2', evalúa si la lista
--- de publicaciones que le gustan a 'u2' coincide con la lista de publicaciones de 'u1', retornando True en caso de encontrar un usuario que cumpla la condición,
--- o False en caso de vaciar la lista de Usuarios.
+-- Recibe una Red Social y un Usuario
+-- Devuelve True si el Usuario pasado por parametro tiene un seguidor fiel, False si no.
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
 tieneUnSeguidorFiel ([], _, _) _ = False
 tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [] = False --Esta línea verifica que el Usuario parámetro tenga al menos una publicación.
@@ -119,7 +118,8 @@ tieneUnSeguidorFiel (u2:us, rs, ps) u1 | publicacionesDe (u2:us, rs, ps) u1 == [
 
 
 
--- describir qué hace la función: Utiliza la función auxiliar secuenciaDeAmigos para obtener la secuencia completa de amigos de 'u1', y verifica si 'u2' pertenece a dicha secuencia.
+-- Recibe una Red Social y dos Usuarios distintos
+-- Devuelve True si existe una secuencia de amigos que conecte a ambos Usuarios, False si no.
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
 existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
 
