@@ -49,7 +49,7 @@ nombresDeUsuarios (u:us, rs, ps) | pertenece (nombreDeUsuario u) (nombresDeUsuar
 
 
 
--- Recibe una Red Social y un Usuario. Se fijate si el usuario pertenece a alguna relacion en las relaciones de la red social. y concatena al amigo.
+-- Recibe una Red Social y un Usuario. comprueba si el usuario pertenece a alguna relacion en las relaciones de la red social. y concatena al amigo.
 -- Devuelve una lista de Usuarios que son amigos del Usuario pasado por parametro.
 amigosDe :: RedSocial -> Usuario -> [Usuario]
 amigosDe (_, [], _) _ = [] -- Si no hay relaciones, devuelve una lista vacía.
@@ -127,28 +127,37 @@ existeSecuenciaDeAmigos red u1 u2 = pertenece u2 (secuenciaDeAmigos red [u1] [])
 
 -- Funciones auxiliares:
 
+-- Recibe una lista de elementos y Devuelve su longitud
 longitud :: [t] -> Int
 longitud [] = 0
 longitud (x:xs) = 1 + longitud xs
 
+-- Recibe un elemento y una lista de elementos.
+-- Devuelve True si el elemento pertenece a la lista, False si no.
 pertenece :: (Eq t) => t -> [t] -> Bool
 pertenece _ [] = False
 pertenece e (x:xs) | e == x = True
                    | otherwise = pertenece e xs
 
+-- Recibe dos listas de elementos.
+-- Devuelve True si todos los elementos de la primera lista pertenecen a la segunda lista, False si no.
 perteneceLista :: (Eq t) => [t] -> [t] -> Bool
 perteneceLista [] _ = True
 perteneceLista (x:xs) l2 | pertenece x l2 = perteneceLista xs l2
                          | otherwise = False
 
+-- Recibe dos listas de elementos y Devuelve True si ambas listas tienen los mismos elementos, False si no.
 mismosElementos :: (Eq t) => [t] -> [t] -> Bool
 mismosElementos l1 l2 = longitud l1 == longitud l2 && perteneceLista l1 l2 && perteneceLista l2 l1
 
+-- Recibe una lista de elementos y Devuelve una lista sin elementos repetidos.
 sinRepetidos :: (Eq t) => [t] -> [t]
 sinRepetidos [] = []
 sinRepetidos (x:xs) | pertenece x xs = sinRepetidos xs
                     | otherwise = x : sinRepetidos xs
 
+-- Recibe una Red Social y dos usuarios distintos.
+-- Devuelve una lista de Usuarios
 secuenciaDeAmigos :: RedSocial -> [Usuario] -> [Usuario] -> [Usuario]
 secuenciaDeAmigos _ [] cadena = cadena
 secuenciaDeAmigos red (u:us) cadena | pertenece u cadena = secuenciaDeAmigos red us cadena
