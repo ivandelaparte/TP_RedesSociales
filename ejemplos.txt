@@ -1,1 +1,0 @@
-redSocial1 = ([(1,"Ivan"),(2,"Lautaro"),(3,"Santino"),(4,"Vito")],[],[])
